@@ -14,7 +14,10 @@ def search(request,name):
             "entry_name": name,
             "entry_info": util.get_entry(name)
         })
+    
+    entries_substring = any(name in entry for entry in util.list_entries())
 
     return render(request, "encyclopedia/search.html", {
-        "substring": name
+        "substring": name,
+        "entries": entries_substring
     })
