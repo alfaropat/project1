@@ -30,5 +30,5 @@ def add(request):
     })
 
 class NewEntryForm():
-    entry_name = forms.CharField(label="New Entry Name")
-    entry_info = forms.CharField(label="New Entry Info")
+    entry_name = forms.CharField(label="Entry Name")
+    entry_info = forms.CharField(label="Entry Info")
