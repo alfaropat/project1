@@ -11,7 +11,7 @@ def index(request):
     })
 
 def error(request, name):
-    return render(request, "encyclopedia/error", {
+    return render(request, "encyclopedia/error.html", {
         "entry": name
     })
 
@@ -54,7 +54,7 @@ def random(request):
         "entry_name": entry_chosen,
         "entry_info": util.get_entry(entry_chosen)
     })
-    
+
 def search(request,name):
     if util.get_entry(name) != None:
         return render(request, "encyclopedia/entry.html", {
