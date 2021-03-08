@@ -7,18 +7,11 @@
 {% block body %}
     <h1>Page to Add</h1>
 
-    <h2>Entry Name:</h2>
+    <h2>New Entry:</h2>
     <form action="{% url 'encyclopedia:add' %}" method="post">
        {% csrf_token %}
-       {{ form_name }}
-    </form>
-
-    <h2>Entry Content:</h2>
-    <form action="{% url 'encyclopedia:add' %}" method="post">
-        {% csrf_token %}
-        {{ form_info }}
-     </form>
-     
-     <input type="submit">
+       {{ form }}
+       <input type="submit">
+    </form> 
 
 {% endblock %}

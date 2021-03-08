@@ -26,9 +26,9 @@ def add(request):
             })
 
     return render(request, "encyclopedia/add.html", {
-        "form_name": NewEntryForm(),
-        "form_info": NewEntryForm()
+        "form": NewEntryForm(),
     })
 
 class NewEntryForm():
-    entry = forms.CharField(label="New Entry")
+    entry_name = forms.CharField(label="New Entry Name")
+    entry_info = forms.CharField(label="New Entry Info")
