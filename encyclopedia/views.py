@@ -9,6 +9,6 @@ def index(request):
     })
 
 def error(request, name):
-    return render(request, "encyclopedia/error", {
+    return render(request, "encyclopedia/error.html", {
         "entry": name
     })
