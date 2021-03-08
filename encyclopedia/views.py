@@ -10,6 +10,10 @@ def index(request):
     })
 
 def entry(request, name):
-    return render(request, "encyclopedia/entry.html", {
+    if name in util.list_entries():
+        return render(request, "encyclopedia/entry.html", {
         "entry": util.get_entry(name)
+    })
+    return render(request, "encyclopedia/error.html", {
+        "entry": name
     })
