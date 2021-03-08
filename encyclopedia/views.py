@@ -26,7 +26,8 @@ def add(request):
             })
 
     return render(request, "encyclopedia/add.html", {
-        "form": NewEntryForm()
+        "form_name": NewEntryForm(),
+        "form_info": NewEntryForm()
     })
 
 class NewEntryForm():
