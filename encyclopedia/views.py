@@ -10,6 +10,6 @@ def index(request):
     })
 
 def entry(request, name):
-    return HttpResponse(render(request, "encyclopedia/entry.html", {
+    return render(request, "encyclopedia/entry.html", {
         "entry": util.get_entry(name)
     })
