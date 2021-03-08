@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 from . import util
 from django import forms
+from django.http import HttpResponse
 
 
 def index(request):
@@ -36,3 +37,11 @@ def add(request):
 class NewEntryForm():
     entry_name = forms.CharField(label="Entry Name")
     entry_info = forms.CharField(label="Entry Info")
+def entry(request, name):
+    if util.get_entry(name) != None:
+        return render(request, "encyclopedia/entry.html", {
+        "entry_name": name,
+        "entry_info": util.get_entry(name)
+    })
+    error(request, name)
+
