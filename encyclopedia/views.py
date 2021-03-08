@@ -14,6 +14,7 @@ def error(request, name):
     return render(request, "encyclopedia/error", {
         "entry": name
     })
+
 def add(request):
     if request.method == "POST":
 
@@ -37,6 +38,7 @@ def add(request):
 class NewEntryForm():
     entry_name = forms.CharField(label="Entry Name")
     entry_info = forms.CharField(label="Entry Info")
+
 def entry(request, name):
     if util.get_entry(name) != None:
         return render(request, "encyclopedia/entry.html", {
@@ -51,4 +53,18 @@ def random(request):
     return render(request, "encyclopedia/entry.html", {
         "entry_name": entry_chosen,
         "entry_info": util.get_entry(entry_chosen)
+    })
+    
+def search(request,name):
+    if util.get_entry(name) != None:
+        return render(request, "encyclopedia/entry.html", {
+            "entry_name": name,
+            "entry_info": util.get_entry(name)
+        })
+    
+    entries_substring = any(name in entry for entry in util.list_entries())
+
+    return render(request, "encyclopedia/search.html", {
+        "substring": name,
+        "entries": entries_substring
     })
