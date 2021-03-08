@@ -10,7 +10,7 @@ def index(request):
     })
 
 def entry(request, name):
-    if name in util.list_entries():
+    if util.get_entry(name) != None:
         return render(request, "encyclopedia/entry.html", {
         "entry": util.get_entry(name)
     })
