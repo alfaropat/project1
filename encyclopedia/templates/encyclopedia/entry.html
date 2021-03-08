@@ -5,12 +5,8 @@
 {% endblock %}
 
 {% block body %}
-    <h1>{{ entry }}</h1>
+    <h1>{{ entry_name }}</h1>
 
-    <ul>
-        {% for entry in entries %}
-            <li>{{ entry }}</li>
-        {% endfor %}
-    </ul>
+    <p>{{ entry_info }}</p>
 
 {% endblock %}
