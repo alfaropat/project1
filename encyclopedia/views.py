@@ -14,6 +14,5 @@ def entry(request, name):
         return render(request, "encyclopedia/entry.html", {
         "entry": util.get_entry(name)
     })
-    return render(request, "encyclopedia/error.html", {
-        "entry": name
-    })
+    error(request, name)
+
