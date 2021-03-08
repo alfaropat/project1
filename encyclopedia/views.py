@@ -12,7 +12,8 @@ def index(request):
 def entry(request, name):
     if util.get_entry(name) != None:
         return render(request, "encyclopedia/entry.html", {
-        "entry": util.get_entry(name)
+        "entry_name": name,
+        "entry_info": util.get_entry(name)
     })
     error(request, name)
 
