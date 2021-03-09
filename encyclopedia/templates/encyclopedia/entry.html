@@ -7,10 +7,6 @@
 {% block body %}
     <h1>{{ entry_name }}</h1>
 
-    <div>
-        <a href="{% url 'encyclopedia:add' %}">Edit Entry</a>
-    </div>
-
-    <p>{{ entry_info }}</p>
+    <p>{{ entry_info|safe }}</p>
 
 {% endblock %}

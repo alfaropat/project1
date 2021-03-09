@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 from . import util
 from django import forms
+from django.http import HttpResponse
 
 
 def index(request):
@@ -38,12 +39,19 @@ def search(request):
 class NewSearchForm(forms.Form):
     search = forms.CharField(label="New Search")
 
-def entry(request):
+def entry(request, name):
+    full_entry = util.get_entry(name)
 
-    if util.get_entry(request.GET) != None:
-        return render(request, "encyclopedia/entry.html", {
-        "entry_name": request.GET,
-        "entry_info": util.get_entry(request.GET)
+    return render(request, "encyclopedia/entry.html", {
+        "entry_name": name,
+        "entry_info": full_entry[len(name)+2:len(full_entry)-1]
     })
-   # error(request, name)
+
+   # if util.get_entry(request.GET) != None:
+    #    return render(request, "encyclopedia/entry.html", {
+     #   "entry_name": request.GET,
+      #  "entry_info": util.get_entry(request.GET)
+    #})
+   
+    return HttpResponse("The value is None!")
 
