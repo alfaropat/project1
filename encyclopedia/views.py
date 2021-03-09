@@ -37,3 +37,11 @@ def search(request):
 
 class NewSearchForm(forms.Form):
     search = forms.CharField(label="New Search")
+def entry(request, name):
+    if util.get_entry(name) != None:
+        return render(request, "encyclopedia/entry.html", {
+        "entry_name": name,
+        "entry_info": util.get_entry(name)
+    })
+   # error(request, name)
+
