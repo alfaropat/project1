@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 from . import util
 from django import forms
 from django.http import HttpResponse
 
+def redirect_index(request):
+    return redirect("index")
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
@@ -42,10 +44,11 @@ class NewSearchForm(forms.Form):
 def entry(request, name):
     full_entry = util.get_entry(name)
 
-    return render(request, "encyclopedia/entry.html", {
-        "entry_name": name,
-        "entry_info": full_entry[len(name)+2:len(full_entry)-1]
-    })
+    if full_entry != None:
+        return render(request, "encyclopedia/entry.html", {
+            "entry_name": name,
+            "entry_info": full_entry[len(name)+2:len(full_entry)-1]
+        })
 
    # if util.get_entry(request.GET) != None:
     #    return render(request, "encyclopedia/entry.html", {
