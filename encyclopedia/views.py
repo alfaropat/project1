@@ -25,17 +25,14 @@ def search(request):
 
                 separate_entries = [entry for entry in full_entry.split("#") if entry]
 
-                entry_names = []
-                entry_infos = []
+                entry_info = []
 
                 for entry in separate_entries:
-                    entry_data = [entry_value for entry_value in entry.splitlines() if entry_value]
-                    entry_names.append(entry_data[0].split())
-                    entry_infos.append(entry_data[1])
+                    entry_data = [entry_value.lstrip() for entry_value in entry.splitlines() if entry_value]
+                    entry_info.append(entry_data)
 
                 return render(request, "encyclopedia/entry.html", {
-                    "entry_name": entry_names,
-                    "entry_info": entry_infos
+                    "entry_info": entry_info
                 })
 
             else:
