@@ -55,13 +55,23 @@ class NewSearchForm(forms.Form):
     search = forms.CharField(label="New Search")
 
 def entry(request, name):
-    full_entry = util.get_entry(name).strip('\n')
+    full_entry = util.get_entry(name)
 
     if full_entry != None:
+        separate_entries = [entry for entry in full_entry.split("#") if entry]
+
+        entry_info = []
+
+        for entry in separate_entries:
+            entry_data = [entry_value.lstrip() for entry_value in entry.split("\n",2) if entry_value]
+            entry_data = [entry.rstrip() for entry in entry_data if entry]
+            entry_data[1] = [entry for entry in entry_data[1].splitlines() if entry]
+            entry_info.append(entry_data)
+            print(entry_info)
+
         return render(request, "encyclopedia/entry.html", {
-            "entry_name": name,
-            "entry_info": full_entry[len(name)+2:]
+            "entry_info": entry_info
         })
-   
+    
     return HttpResponse("The value is None!")
 

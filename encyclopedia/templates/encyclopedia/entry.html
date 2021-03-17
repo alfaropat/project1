@@ -10,7 +10,11 @@
 
         <h1>{{ entry_name }}</h1>
 
-        <p>{{ entry_data }}</p>
+        {% for entry_datas in entry_data %}
+
+            <p>{{ entry_datas }}</p>
+        
+        {% endfor %}
 
     {% endfor %}
 
