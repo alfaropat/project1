@@ -24,11 +24,12 @@ def search(request):
                 full_entry = util.get_entry(form)
 
                 separate_entries = [entry for entry in full_entry.split("#") if entry]
-
                 entry_info = []
 
                 for entry in separate_entries:
-                    entry_data = [entry_value.lstrip() for entry_value in entry.splitlines() if entry_value]
+                    entry_data = [entry_value.lstrip() for entry_value in entry.split("\n",2) if entry_value]
+                    entry_data = [entry.rstrip() for entry in entry_data if entry]
+                    entry_data[1] = [entry for entry in entry_data[1].splitlines() if entry]
                     entry_info.append(entry_data)
 
                 return render(request, "encyclopedia/entry.html", {
@@ -36,10 +37,10 @@ def search(request):
                 })
 
             else:
-                search_list = any(search in entry for entry in util.list_entries())
+                search_list = [entry for entry in util.list_entries() if form.lower() in entry.lower()]
                 
                 return render(request, "encyclopedia/search.html", {
-                    "search_substring": search,
+                    "search_substring": form,
                     "search_list": search_list
                 })
         else:
@@ -59,7 +60,6 @@ def entry(request, name):
 
     if full_entry != None:
         separate_entries = [entry for entry in full_entry.split("#") if entry]
-
         entry_info = []
 
         for entry in separate_entries:
@@ -67,7 +67,6 @@ def entry(request, name):
             entry_data = [entry.rstrip() for entry in entry_data if entry]
             entry_data[1] = [entry for entry in entry_data[1].splitlines() if entry]
             entry_info.append(entry_data)
-            print(entry_info)
 
         return render(request, "encyclopedia/entry.html", {
             "entry_info": entry_info
