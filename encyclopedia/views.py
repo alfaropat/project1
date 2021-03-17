@@ -5,7 +5,7 @@ from django import forms
 from django.http import HttpResponse
 
 def redirect_index(request):
-    return redirect('index/')
+    return redirect('/wiki')
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
