@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 from . import util
 from django import forms
 from django.http import HttpResponse
+import random
 
 def redirect_index(request):
     return redirect('/wiki')
@@ -55,7 +56,11 @@ def search(request):
 class NewSearchForm(forms.Form):
     search = forms.CharField(label="New Search")
 
+def redirect_random(request):
+    return redirect('encyclopedia:entry', name = random.choice(util.list_entries()))
+
 def entry(request, name):
+
     full_entry = util.get_entry(name)
 
     if full_entry != None:
@@ -70,7 +75,7 @@ def entry(request, name):
 
         return render(request, "encyclopedia/entry.html", {
             "entry_info": entry_info
-        })
+        })        
     
     return HttpResponse("The value is None!")
-
+      
