@@ -77,5 +77,7 @@ def entry(request, name):
             "entry_info": entry_info
         })        
     
-    return HttpResponse("The value is None!")
+    return render(request, "encyclopedia/error.html", {
+        "entry_name": name
+    })
       
