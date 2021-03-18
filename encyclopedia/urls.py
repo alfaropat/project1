@@ -1,13 +1,16 @@
 from django.urls import path
 
 from . import views
+from django.conf.urls import url
+from django.views.generic import RedirectView
 
 app_name = "encyclopedia"
 urlpatterns = [
-    path("", views.index, name="index"),
+    url(r'^$', views.redirect_index),
+    path("wiki", views.index, name="index"),
     path("error", views.error, name="error"),
     path("add", views.add, name="add"),
-    path('<str:name>', views.entry, name="entry"),
-    path("random", views.random, name="random"),
-    path("search", views.search, name="search")
+    path('wiki/<str:name>', views.entry, name="entry"),
+    path("random", views.random, name="random"),    
+    path("search", views.search, name="search"),
 ]

@@ -5,8 +5,17 @@
 {% endblock %}
 
 {% block body %}
-    <h1>{{ entry_name }}</h1>
 
-    <p>{{ entry_info|safe }}</p>
+    {% for entry_name, entry_data in entry_info %}
+
+        <h1>{{ entry_name }}</h1>
+
+        {% for entry_datas in entry_data %}
+
+            <p>{{ entry_datas }}</p>
+        
+        {% endfor %}
+
+    {% endfor %}
 
 {% endblock %}
