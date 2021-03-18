@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 from . import util
 from django import forms
 from django.http import HttpResponse
+import random
 
 def redirect_index(request):
     return redirect('/wiki')
@@ -10,11 +11,6 @@ def redirect_index(request):
 def index(request):
     return render(request, "encyclopedia/index.html", {
         "entries": util.list_entries()
-    })
-
-def error(request, name):
-    return render(request, "encyclopedia/error.html", {
-        "entry": name
     })
 
 def add(request):
@@ -41,23 +37,7 @@ class NewEntryForm():
     entry_name = forms.CharField(label="Entry Name")
     entry_info = forms.CharField(label="Entry Info")
 
-def entry(request, name):
-    if util.get_entry(name) != None:
-        return render(request, "encyclopedia/entry.html", {
-        "entry_name": name,
-        "entry_info": util.get_entry(name)
-    })
-    error(request, name)
-
-def random(request):
-    entry_chosen = random.choice(util.list_entries())
-
-    return render(request, "encyclopedia/entry.html", {
-        "entry_name": entry_chosen,
-        "entry_info": util.get_entry(entry_chosen)
-    })
-
-def search(request, name):
+def search(request):
 
     if request.method == "POST":
         form = NewSearchForm(request.POST)
@@ -100,7 +80,11 @@ def search(request, name):
 class NewSearchForm(forms.Form):
     search = forms.CharField(label="New Search")
 
+def redirect_random(request):
+    return redirect('encyclopedia:entry', name = random.choice(util.list_entries()))
+
 def entry(request, name):
+
     full_entry = util.get_entry(name)
 
     if full_entry != None:
@@ -115,7 +99,9 @@ def entry(request, name):
 
         return render(request, "encyclopedia/entry.html", {
             "entry_info": entry_info
-        })
+        })        
     
-    return HttpResponse("The value is None!")
-
+    return render(request, "encyclopedia/error.html", {
+        "entry_name": name
+    })
+      
