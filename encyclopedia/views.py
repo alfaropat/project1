@@ -45,7 +45,7 @@ def search(request):
                     "search_list": search_list
                 })
         else:
-            return render(request, "tasks/search.html", {
+            return render(request, "encyclopedia/search.html", {
                 "form": form
             })
                     
@@ -89,18 +89,29 @@ def add(request):
         if form.is_valid():
             entry_name = form.cleaned_data["entry_name"]
             entry_info = form.cleaned_data["entry_info"]
+            entry_content = f"# {entry_name}\n\n {entry_info}\n"
 
-            util.save_entry(entry_name,entry_info)
+            if util.get_entry(entry_name) != None:
+                return render(request, "encyclopedia/add.html", {
+                    "form": form,
+                    "exists": True
+                })
 
-            return render(request, "encyclopedia/entry.html", {
-                "entry_name": entry_name,
-                "entry_info": entry_info
+            util.save_entry(entry_name,entry_content)
+
+            return redirect('encyclopedia:entry', name = entry_name)
+
+        else:
+            return render(request, "encyclopedia/add.html", {
+                "form": form,
+                "exists": False
             })
 
     return render(request, "encyclopedia/add.html", {
         "form": NewEntryForm(),
+        "exists": False
     })
 
-class NewEntryForm():
+class NewEntryForm(forms.Form):
     entry_name = forms.CharField(label="Entry Name")
     entry_info = forms.CharField(label="Entry Info")

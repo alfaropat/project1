@@ -7,6 +7,10 @@
 {% block body %}
     <h1>Page to Add</h1>
 
+    {% if exists == True %}
+        <p>Error: Entry already exists!</p>
+    {% endif %}
+
     <h2>New Entry:</h2>
     <form action="{% url 'encyclopedia:add' %}" method="post">
        {% csrf_token %}
