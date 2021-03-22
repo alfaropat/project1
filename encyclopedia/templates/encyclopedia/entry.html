@@ -6,26 +6,16 @@
 
 {% block body %}
 
-    {% for entry_name, entry_data in entry_info %}
+    <h1>{{ entry_name }}</h1>
 
-        <h1>{{ entry_name }}</h1>
+    {% for entry_data in entry_content %}
 
-        {% for entry_datas in entry_data %}
-
-            <p>{{ entry_datas }}</p>
-        
-        {% endfor %}
+        <p>{{ entry_data }}</p>
         
     {% endfor %}
-
-    {% if len(entry_info[0]) > 1 %}
-        <ul>
-            <li><a href="{% url 'encyclopedia:edit' entry_info[0][0] %}">Edit Entry</a></li>
-        </ul>
-    {% else %}
-        <ul>
-            <li><a href="{% url 'encyclopedia:edi' entry_info[0] %}">Edit Entry</a></li>
-        </ul>
-    {% endif %}
-
+        
+    <ul>
+        <li><a href="{% url 'encyclopedia:edit' entry_name %}">Edit Entry</a></li>
+    </ul>
+        
 {% endblock %}

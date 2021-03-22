@@ -35,3 +35,22 @@ def get_entry(title):
         return f.read().decode("utf-8")
     except FileNotFoundError:
         return None
+
+def get_content(full_entry):
+    """
+    Retrieves a list of the entry's name and infromation.
+    """
+    entry_info = []
+    full_content = [entry.lstrip() for entry in full_entry.replace("#","\n").replace("\r","\n").split("\n") if entry]
+    entry_content = full_content[1:]
+    entry_info.append(full_content[0])
+    entry_info.append(entry_content)
+    """
+    for entry in full_entry:
+        entry_data = [entry_value.lstrip() for entry_value in entry.split("\n",2) if entry_value]
+        entry_data = [entry.rstrip() for entry in entry_data if entry]
+        entry_data[1] = [entry for entry in entry_data[1].splitlines() if entry]
+        entry_info.append(entry_data)
+    """
+
+    return entry_info

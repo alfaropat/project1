@@ -22,19 +22,12 @@ def search(request):
             form = form.cleaned_data["search"]
 
             if util.get_entry(form) != None:
-                full_entry = util.get_entry(form)
 
-                separate_entries = [entry for entry in full_entry.split("#") if entry]
-                entry_info = []
-
-                for entry in separate_entries:
-                    entry_data = [entry_value.lstrip() for entry_value in entry.split("\n",2) if entry_value]
-                    entry_data = [entry.rstrip() for entry in entry_data if entry]
-                    entry_data[1] = [entry for entry in entry_data[1].splitlines() if entry]
-                    entry_info.append(entry_data)
-
+                entry_info = util.get_content(util.get_entry(form))
+                
                 return render(request, "encyclopedia/entry.html", {
-                    "entry_info": entry_info
+                    "entry_name": entry_info[0],
+                    "entry_content": entry_info[1]
                 })
 
             else:
@@ -64,17 +57,11 @@ def entry(request, name):
     full_entry = util.get_entry(name)
 
     if full_entry != None:
-        separate_entries = [entry for entry in full_entry.split("#") if entry]
-        entry_info = []
-
-        for entry in separate_entries:
-            entry_data = [entry_value.lstrip() for entry_value in entry.split("\n",2) if entry_value]
-            entry_data = [entry.rstrip() for entry in entry_data if entry]
-            entry_data[1] = [entry for entry in entry_data[1].splitlines() if entry]
-            entry_info.append(entry_data)
+        entry_info = util.get_content(full_entry)
 
         return render(request, "encyclopedia/entry.html", {
-            "entry_info": entry_info
+            "entry_name": entry_info[0],
+            "entry_content": entry_info[1]
         })        
     
     return render(request, "encyclopedia/error.html", {
@@ -113,28 +100,34 @@ def add(request):
     })
 
 class NewEntryForm(forms.Form):
-    entry_name = forms.CharField(label="Entry Name")
-    entry_info = forms.CharField(label="Entry Info")
-    
+    entry_name = forms.CharField(label="Title")
+    entry_info = forms.CharField(label="Content", widget=forms.Textarea(attrs={'style':'width: 80%; height: 75%;'}))
+
+class NewEditForm(forms.Form):
+    full_entry = forms.CharField(widget=forms.Textarea(attrs={'style':'width: 80%; height: 75%;'}))
+
 def edit(request,name):
     if request.method == "POST":
         
-        form = NewEntryForm(request.POST)
+        form = NewEditForm(request.POST)
 
         if form.is_valid():
-            entry_info = form.cleaned_data["entry_info"]
+            entry_info = form.cleaned_data["full_entry"]
             util.save_entry(name,entry_info)
 
-            return render(request, "encyclopedia/entry.html", {
-                "name": name
-            })
+            return redirect('encyclopedia:entry', name)
 
         else:
 
-            return render(request, "encyclopedia/add.html", {
+            return render(request, "encyclopedia/edit.html", {
                 "form": form
             })
 
-    return render(request, "encyclopedia/html", {
-        "form": NewEntryForm()
-    })
+    else:
+
+        form = NewEditForm(initial={'full_entry': util.get_entry(name)})
+
+        return render(request, "encyclopedia/edit.html", {
+            "name": name,
+            "form": form
+        })
