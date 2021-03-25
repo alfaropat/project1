@@ -4,6 +4,7 @@ from . import util
 from django import forms
 from django.http import HttpResponse
 import random
+import markdown2
 
 def redirect_index(request):
     return redirect('/wiki')
@@ -22,12 +23,10 @@ def search(request):
             form = form.cleaned_data["search"]
 
             if util.get_entry(form) != None:
-
-                entry_info = util.get_content(util.get_entry(form))
                 
                 return render(request, "encyclopedia/entry.html", {
-                    "entry_name": entry_info[0],
-                    "entry_content": entry_info[1]
+                    "entry_name": form,
+                    "entry_content": markdown2.markdown(util.get_entry(form))                    
                 })
 
             else:
@@ -35,8 +34,10 @@ def search(request):
                 
                 return render(request, "encyclopedia/search.html", {
                     "search_substring": form,
-                    "search_list": search_list
+                    "search_list": search_list,
+                    "entries_found": len(search_list)
                 })
+
         else:
             return render(request, "encyclopedia/search.html", {
                 "form": form
@@ -53,15 +54,13 @@ def redirect_random(request):
     return redirect('encyclopedia:entry', name = random.choice(util.list_entries()))
 
 def entry(request, name):
-
     full_entry = util.get_entry(name)
 
     if full_entry != None:
-        entry_info = util.get_content(full_entry)
 
         return render(request, "encyclopedia/entry.html", {
-            "entry_name": entry_info[0],
-            "entry_content": entry_info[1]
+            "entry_name": name,
+            "entry_content": markdown2.markdown(util.get_entry(name))
         })        
     
     return render(request, "encyclopedia/error.html", {
@@ -70,13 +69,11 @@ def entry(request, name):
       
 def add(request):
     if request.method == "POST":
-
         form = NewEntryForm(request.POST)
 
         if form.is_valid():
             entry_name = form.cleaned_data["entry_name"]
-            entry_info = form.cleaned_data["entry_info"]
-            entry_content = f"# {entry_name}\n\n {entry_info}\n"
+            entry_content = form.cleaned_data["entry_info"]
 
             if util.get_entry(entry_name) != None:
                 return render(request, "encyclopedia/add.html", {
@@ -108,7 +105,6 @@ class NewEditForm(forms.Form):
 
 def edit(request,name):
     if request.method == "POST":
-        
         form = NewEditForm(request.POST)
 
         if form.is_valid():
@@ -118,16 +114,14 @@ def edit(request,name):
             return redirect('encyclopedia:entry', name)
 
         else:
-
             return render(request, "encyclopedia/edit.html", {
                 "form": form
             })
 
     else:
-
         form = NewEditForm(initial={'full_entry': util.get_entry(name)})
 
         return render(request, "encyclopedia/edit.html", {
             "name": name,
-            "form": form
+            "form": form,
         })
