@@ -20,14 +20,10 @@
                     <a href="{% url 'encyclopedia:index' %}">Home</a>
                 </div>
                 <div>
-                    <a href="{% url 'add' %}">Create New Page</a>
+                    <a href="{% url 'encyclopedia:add' %}">Create New Page</a>
                 </div>
                 <div>
-<<<<<<< HEAD
-                    <a href="{% url 'random' %}">Random Page</a>
-=======
                     <a href="{% url 'encyclopedia:rand' %}">Random Page</a>
->>>>>>> search
                 </div>
                 {% block nav %}
                 {% endblock %}

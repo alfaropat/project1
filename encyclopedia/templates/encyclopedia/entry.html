@@ -1,21 +1,17 @@
 {% extends "encyclopedia/layout.html" %}
 
 {% block title %}
-    Encyclopedia
+    Encyclopedia: {{ entry_name }}
 {% endblock %}
 
 {% block body %}
 
-    {% for entry_name, entry_data in entry_info %}
-
-        <h1>{{ entry_name }}</h1>
-
-        {% for entry_datas in entry_data %}
-
-            <p>{{ entry_datas }}</p>
+    <div>
+        {{ entry_content|safe }}
+    </div>
         
-        {% endfor %}
-
-    {% endfor %}
-
+    <ul>
+        <li><a href="{% url 'encyclopedia:edit' entry_name %}">Edit Entry</a></li>
+    </ul>
+        
 {% endblock %}

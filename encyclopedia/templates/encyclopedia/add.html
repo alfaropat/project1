@@ -5,13 +5,16 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Page to Add</h1>
+    <h1>New Entry:</h1>
 
-    <h2>New Entry:</h2>
-    <form action="{% url 'add' %}" method="post">
+    <form action="{% url 'encyclopedia:add' %}" method="post">
        {% csrf_token %}
-       {{ form }}
+       {{ form.as_p }}
        <input type="submit">
     </form> 
+
+    {% if exists == True %}
+        <h5 style="color:red">Error: Entry already exists!</h5>
+    {% endif %}
 
 {% endblock %}
