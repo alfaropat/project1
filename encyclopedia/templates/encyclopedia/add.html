@@ -9,7 +9,14 @@
 
     <form action="{% url 'encyclopedia:add' %}" method="post">
        {% csrf_token %}
-       {{ form.as_p }}
+       {% for field in form %}
+            <div>
+                {{ field.label_tag }}
+            </div>
+            <div>
+                {{ field }}
+            </div>
+        {% endfor %}
        <input type="submit">
     </form> 
 
